@@ -37,4 +37,4 @@ This app can generate buttons (arbitrary number) with function on YAML config fi
     ./multiple_button_array
     ```
 
-Here is the installation video link.
+Here is the installation video link: [compiling rust app](https://youtu.be/wMQbYiurzJw "compiling rust app")
