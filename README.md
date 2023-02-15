@@ -29,7 +29,7 @@ This app can generate buttons (arbitrary number) with function on YAML config fi
     ```
 6. Run the bash script
     ```bash
-    ./compile_rush_app.sh
+    ./compile_rust_app.sh
     ```
 7. Wait for the script to execute. Properly respond to installation prompt.
 8. The compilation is finish. You can find the executable file on the project root folder or run the following command
