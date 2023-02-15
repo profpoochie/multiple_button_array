@@ -52,32 +52,25 @@ fn build_ui(application: &gtk::Application) {
         .column_spacing(12)
         .build();
 
-    let mut counter=0;
-    let mut column;
-    let mut row;
     window.set_child(Some(&container));
     // setting buttons based on YAML config file.
-    for button in buttons.buttons {
+    for (index,button) in buttons.buttons.iter().enumerate() {
 
-        column = counter / ROW_LIMIT;
-        row = counter % ROW_LIMIT;
+        let row = (index as i32) % ROW_LIMIT;
+        let column = (index as i32) / ROW_LIMIT;
 
         let buttons = Button::with_label(&button.name);
         let actions = button.command.clone();
         buttons.connect_clicked(move |_|{
-            term_command(actions.to_string());
+            execute_command(actions.to_string());
         });
         container.attach(&buttons,column,row,1,1);
-        counter = counter+1;
     }
-
-
-
     window.show();
 }
 
 // Terminal command
-fn term_command(input_string:String) {
+fn execute_command(input_string:String) {
     let input_vec: Vec<&str> = input_string
         .trim()
         .split(" ")
@@ -89,8 +82,5 @@ fn term_command(input_string:String) {
         .arg(format!("sh -c '{} {:?}; read -p \"Press any key to continue...\"'", command, args.join(" ")).as_str())
         .spawn()
         .expect("Failed to open new terminal");
-
-    /*let stdout = String::from_utf8_lossy(&output.stdout);
-    println!("{}", stdout);*/
 }
 

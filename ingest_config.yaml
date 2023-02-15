@@ -6,7 +6,7 @@ buttons:
   - name: button3
     command: sensors -u
   - name: button4
-    command: ls -lh
+    command: ps -ef
   - name: button5
     command: lsb_release -d
   - name: button6
