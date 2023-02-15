@@ -50,4 +50,7 @@ fi
 echo "Copying executable file to project root folder..."
 cp "$EXECUTABLE" .
 
+# Delete the target folder and all its contents
+rm -rf target
+
 echo "Done."
