@@ -38,3 +38,16 @@ This app can generate buttons (arbitrary number) with function on YAML config fi
     ```
 
 Here is the installation video link: [compiling rust app](https://youtu.be/wMQbYiurzJw "compiling rust app")
+
+### Alternative install
+You can use the **compile_rust_app_clean.sh** script to get rid of all the compilation files leaving only the executable file and the YAML config file.
+
+5. Make the bash script executable
+
+    ```bash
+    chmod +x compile_rust_app_clean.sh
+    ```
+6. Run the bash script
+    ```bash
+    ./compile_rush_app_clean.sh
+    ```

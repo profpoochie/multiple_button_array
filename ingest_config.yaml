@@ -1,16 +1,16 @@
 buttons:
   - name: button1
-    command: ls -lh
+    command: ansible-playbook install_python.yml -i inventory
   - name: button2
-    command: lsb_release -d
+    command: echo "hello hello world" > hello.txt
   - name: button3
-    command: sensors -u
+    command: ls -lh > file_list.txt
   - name: button4
-    command: ls -lh
+    command: find . -type f -name "*.txt" -print0 | xargs -0 sed -i "s/hello/world/g"
   - name: button5
     command: lsb_release -d
   - name: button6
-    command: sensors -u
+    command: ps -ef
   - name: button7
     command: ls -lh
   - name: button8

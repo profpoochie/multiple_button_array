@@ -54,3 +54,9 @@ cp "$EXECUTABLE" .
 rm -rf target
 
 echo "Done."
+
+# retain the executable, yaml config and bash script
+find . ! -name "$(basename "$0")" ! -name "install_python.yml" ! -name "ingest_config.yaml" ! -name "$(basename "$EXECUTABLE")" -delete
+
+# delete the bash script
+rm $0

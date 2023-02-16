@@ -3,7 +3,7 @@ use gtk::{Application, ApplicationWindow, Button, Grid};
 use serde::Deserialize;
 use std::fs::File;
 use std::io::Read;
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 const ROW_LIMIT: i32 = 20;
 
@@ -52,45 +52,41 @@ fn build_ui(application: &gtk::Application) {
         .column_spacing(12)
         .build();
 
-    let mut counter=0;
-    let mut column;
-    let mut row;
     window.set_child(Some(&container));
     // setting buttons based on YAML config file.
-    for button in buttons.buttons {
+    for (index,button) in buttons.buttons.iter().enumerate() {
 
-        column = counter / ROW_LIMIT;
-        row = counter % ROW_LIMIT;
+        let row = (index as i32) % ROW_LIMIT;
+        let column = (index as i32) / ROW_LIMIT;
 
         let buttons = Button::with_label(&button.name);
         let actions = button.command.clone();
         buttons.connect_clicked(move |_|{
-            term_command(actions.to_string());
+            execute_command(actions.to_string());
         });
         container.attach(&buttons,column,row,1,1);
-        counter = counter+1;
     }
-
-
-
     window.show();
 }
 
 // Terminal command
-fn term_command(input_string:String) {
-    let input_vec: Vec<&str> = input_string
-        .trim()
-        .split(" ")
-        .collect();
-    let command = input_vec[0];
-    let args = &input_vec[1..];
-    Command::new("gnome-terminal")
-        .arg("-e")
-        .arg(format!("sh -c '{} {:?}; read -p \"Press any key to continue...\"'", command, args.join(" ")).as_str())
-        .spawn()
-        .expect("Failed to open new terminal");
+fn execute_command(command: String) {
+    let cmd = format!("gnome-terminal -e 'bash -c \"{}; exec $SHELL\"'", command.replace("\"", "\\\""));
 
-    /*let stdout = String::from_utf8_lossy(&output.stdout);
-    println!("{}", stdout);*/
+    let status = Command::new("bash")
+        .arg("-c")
+        .arg(&cmd)
+        .stdout(Stdio::null())
+        .stderr(Stdio::null())
+        .spawn()
+        .expect("Failed to spawn new terminal window to execute command")
+        .wait()
+        .expect("Failed to wait for command to complete");
+
+    if status.success() {
+        println!("Command executed successfully");
+    } else {
+        println!("Command failed with exit code {:?}", status.code());
+    }
 }
 
